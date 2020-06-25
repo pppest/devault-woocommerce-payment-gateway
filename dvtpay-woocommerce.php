@@ -416,34 +416,3 @@ function add_to_woo_dvtpay_gateway( $gateways ) {
     $gateways[] = 'WC_Gateway_DVTPay';
     return $gateways;
 }
-
-
-add_filter( 'woocommerce_gateway_description', 'dvtpay_description_fields', 20, 2 );
-
-function dvtpay_description_fields($description, $payment_id){
-
-	if( 'dvtpay' != $payment_id )	{
-	return $description;
-	}
-
-	ob_start();
-
-	echo'<div style-"display: block; width: 150px; height: auto;">';
-	echo shell_exec('delight');
-	echo '</div>';
-
-	$description .= ob_get_clean();
-
-	return $description;
-
-	/**add_action( 'woocommerce_thankyou', 'dvtpay_redirectcustom');
-
-	function dvtpay_redirectcustom( $order_id ){
-	    global $woocommerce;
-   		$order = wc_get_order( $order_id );
-   		$url = 'https://devault.cc/';
-   		if ( ! $order->has_status( 'failed' ) ) {
-   	    wp_safe_redirect( $url );
-   	    exit;
-		}
-	}
