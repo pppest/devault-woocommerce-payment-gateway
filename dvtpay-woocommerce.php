@@ -86,7 +86,7 @@ function dvtpay_init() {
           $this->form_fields = array(
             'enabled'            => array(
               'title'       => __( 'Enable/Disable', 'dvtpay-payments-woo' ),
-              'label'       => __( 'Enable cash on delivery', 'dvtpay-payments-woo' ),
+              'label'       => __( 'Enable DVTPay', 'dvtpay-payments-woo' ),
               'type'        => 'checkbox',
               'description' => '',
               'default'     => 'no',
@@ -95,21 +95,21 @@ function dvtpay_init() {
               'title'       => __( 'Title', 'dvtpay-payments-woo' ),
               'type'        => 'text',
               'description' => __( 'Payment method description that the customer will see on your checkout.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'Cash on delivery', 'dvtpay-payments-woo' ),
+              'default'     => __( 'DVTPay on delivery', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'description'        => array(
               'title'       => __( 'Description', 'dvtpay-payments-woo' ),
               'type'        => 'textarea',
               'description' => __( 'Payment method description that the customer will see on your website.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'Pay with cash upon delivery.', 'dvtpay-payments-woo' ),
+              'default'     => __( 'Pay with DVTPay .', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'instructions'       => array(
               'title'       => __( 'Instructions', 'dvtpay-payments-woo' ),
               'type'        => 'textarea',
               'description' => __( 'Instructions that will be added to the thank you page.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'Pay with cash upon delivery.', 'dvtpay-payments-woo' ),
+              'default'     => __( 'Pay with DVTPay .', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'enable_for_methods' => array(
