@@ -78,7 +78,7 @@ function dvtpay_init() {
          */
         protected function setup_properties() {
           $this->id                 = 'dvtpay';
-          $this->icon               = plugin_dir_url(__FILE__).'assets/dvtpay.png';
+          $this->icon               = plugin_dir_url(__FILE__).'icon.png';
           //$this->icon               = apply_filters( 'woocommerce_dvtpay_icon', 'https://raw.githubusercontent.com/devaultcrypto/dvtgraphics/796dc7028954e87c964c12e6e7b867ddbdf78941/Logos/SVG/DVT-Logo-SVG-Horizontal-Dark.svg"' );
           $this->order_button_text  = __('Proceed to DVTPay', 'dvtpay');
           $this->method_title       = __( 'Pay with DeVault', 'dvtpay-payments-woo' );
