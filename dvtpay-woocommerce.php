@@ -62,13 +62,6 @@ function dvtpay_init() {
           add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );
           add_filter( 'woocommerce_payment_complete_order_status', array( $this, 'change_payment_complete_order_status' ), 10, 3 );
 
-          // Custom redirect for users after clicking 'pay with dvt'
-          add_filter('woocommerce_checkout_place_order', 'dvtpay_checkout_place_order_redirect');
-          function dvtpay_checkout_place_order_redirect( $redirect ) {
-               $redirect = 'http://desmadrecity.com/';
-               return $redirect;
-          }
-
           // Customer Emails.
           add_action( 'woocommerce_email_before_order_table', array( $this, 'email_instructions' ), 10, 3 );
         }
@@ -78,7 +71,7 @@ function dvtpay_init() {
          */
         protected function setup_properties() {
           $this->id                 = 'dvtpay';
-          $this->icon               = plugin_dir_url(__FILE__).'icon.png';
+          $this->icon               = plugin_dir_url(__FILE__).'assets/dvtpay.png';
           //$this->icon               = apply_filters( 'woocommerce_dvtpay_icon', 'https://raw.githubusercontent.com/devaultcrypto/dvtgraphics/796dc7028954e87c964c12e6e7b867ddbdf78941/Logos/SVG/DVT-Logo-SVG-Horizontal-Dark.svg"' );
           $this->order_button_text  = __('Proceed to DVTPay', 'dvtpay');
           $this->method_title       = __( 'Pay with DeVault', 'dvtpay-payments-woo' );
@@ -93,7 +86,7 @@ function dvtpay_init() {
           $this->form_fields = array(
             'enabled'            => array(
               'title'       => __( 'Enable/Disable', 'dvtpay-payments-woo' ),
-              'label'       => __( 'Enable DVTPay', 'dvtpay-payments-woo' ),
+              'label'       => __( 'Enable cash on delivery', 'dvtpay-payments-woo' ),
               'type'        => 'checkbox',
               'description' => '',
               'default'     => 'no',
@@ -102,21 +95,21 @@ function dvtpay_init() {
               'title'       => __( 'Title', 'dvtpay-payments-woo' ),
               'type'        => 'text',
               'description' => __( 'Payment method description that the customer will see on your checkout.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'DVTPay on delivery', 'dvtpay-payments-woo' ),
+              'default'     => __( 'Cash on delivery', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'description'        => array(
               'title'       => __( 'Description', 'dvtpay-payments-woo' ),
               'type'        => 'textarea',
               'description' => __( 'Payment method description that the customer will see on your website.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'Pay with DVTPay .', 'dvtpay-payments-woo' ),
+              'default'     => __( 'Pay with cash upon delivery.', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'instructions'       => array(
               'title'       => __( 'Instructions', 'dvtpay-payments-woo' ),
               'type'        => 'textarea',
               'description' => __( 'Instructions that will be added to the thank you page.', 'dvtpay-payments-woo' ),
-              'default'     => __( 'Pay with DVTPay .', 'dvtpay-payments-woo' ),
+              'default'     => __( 'Pay with cash upon delivery.', 'dvtpay-payments-woo' ),
               'desc_tip'    => true,
             ),
             'enable_for_methods' => array(
@@ -353,10 +346,6 @@ function dvtpay_init() {
             // pending
             $order->update_status( apply_filters( 'woocommerce_dvtpay_process_payment_order_status', $order->has_downloadable_item() ? 'wc-invoced' : 						 'processing', $order ), __( 'You will be redirected to the DVTPay portal.', 'dvtpay-payments-woo' ) );
 
-            // goto dvtpay
-
-
-
             //cleared
             $order->payment_complete();
           } else {
@@ -369,10 +358,9 @@ function dvtpay_init() {
           // Return thankyou redirect.
           return array(
             'result'   => 'success',
-            'redirect' => $this->get_return_url( $order ),
+            'redirect' => 'DVTPay' //$this->get_return_url( $order ),
           );
         }
-
 
         /**
          * Output for the order received page.
@@ -415,14 +403,50 @@ function dvtpay_init() {
           }
         }
       }
+
+
     }
 }
 
 
-// add dvtpay ggateway to woocommerce
 add_filter( 'woocommerce_payment_gateways', 'add_to_woo_dvtpay_gateway');
 
 function add_to_woo_dvtpay_gateway( $gateways ) {
     $gateways[] = 'WC_Gateway_DVTPay';
     return $gateways;
+}
+
+
+
+
+/// shortcodes etc
+
+add_action( 'woocommerce_thankyou_dvtpay', 'dvtpay_add_content_thankyou_dvtpay' );
+
+	function dvtpay_add_content_thankyou_dvtpay() {
+		echo shell_exec('pwd');
+		do_action('embed_python', '/var/www/html/helloworld,py');
+		echo '[python file="helloworld.py"]';
+}
+
+add_shortcode( 'test', 'embed_test' );
+
+function embed_test(){
+
+	$output = shell_exec('echo lim | sudo -S /opt/DeLight/delight addrequest 100 '); //, $output, $returnval);
+	//echo $output;
+	$var2 = json_decode($output, true);
+	//echo $var2;
+	$invoice = $var2['URI'];
+	$id = $var2['id'];
+	//echo $id;
+	//echo '  ';
+	//echo $invoice;
+	shell_exec("echo lim | sudo -S qrencode -o invoices/$id.png $invoice");
+	shell_exec("echo lim | sudo -S chmod 0777 invoices/$id.png");
+	shell_exec("echo lim | sudo -S chown -R www-data invoices/*.png");
+	//system('pwd');
+	echo "<img width='100' src='../invoices/$id.png'>";
+	echo '<pre>'; print_r($output); echo '</pre>';
+
 }
