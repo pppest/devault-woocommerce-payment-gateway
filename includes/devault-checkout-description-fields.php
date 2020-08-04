@@ -108,7 +108,8 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
                     </div><br style="clear: both;" />
                     <div><img style="all: unset; text-align: center; " src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example" alt="'.$req_uri.'" ></div><br style="clear: both;" />
                     <div id="confirmed" >'.$description[6].'</div>
-                    <div id="confirmed" >'.$description[6].'</div>
+                    <div id="txid_show" ></div>
+
             </div>';
 
     woocommerce_form_field(
