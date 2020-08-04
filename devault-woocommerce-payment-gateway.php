@@ -54,7 +54,6 @@ add_filter( 'woocommerce_payment_gateways', 'add_to_woo_devault_payment_gateway'
 function devault_payment_init() {
     if( class_exists( 'WC_Payment_Gateway' ) ) {
 		require_once plugin_dir_path( __FILE__ ) . '/includes/class-wc-payment-gateway-devault.php';
-		require_once plugin_dir_path( __FILE__ ) . '/includes/devault-bitdb-utils.php';
 		require_once plugin_dir_path( __FILE__ ) . '/includes/devault-checkout-description-fields.php';
 	}
 }

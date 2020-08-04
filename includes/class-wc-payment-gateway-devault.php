@@ -23,12 +23,13 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		// Get settings.
-		$this->title            	 = $this->get_option( 'title' );
+		$this->title            		 = $this->get_option( 'title' );
 		$this->store_devault_address = $this->get_option( 'store_devault_address' );
 		$this->description        	 = $this->get_option( 'description' );
 		$this->instructions       	 = $this->get_option( 'instructions' );
 		$this->enable_for_methods 	 = $this->get_option( 'enable_for_methods', array() );
 		$this->enable_for_virtual 	 = $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes';
+		$this->devault_timeout     	 = $this->get_option( 'devault_timeout' );
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );
@@ -46,8 +47,8 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-SVG-Horizontal-Dark.svg' );
 		$this->method_title       = __( 'DeVault Payments', 'devault-payments-woo' );
 		$this->method_description = __( 'Have your customers pay with devault  Payments.', 'devault-payments-woo' );
-		$this->devault_timeout    = __( 'Payment timeout');
-		$this->price_in_dvt		  = 0;
+		$this->devault_timeout    = __( 'Payment timeout' );
+		$this->price_in_dvt		  	= 0;
 		$this->has_fields         = false;
 	}
 

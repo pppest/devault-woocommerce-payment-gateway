@@ -13,7 +13,7 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
     if ( 'devault' !== $payment_id ) {
         return $description;
     }
-    $description = explode('/',$description);
+    $description = explode( '/', $description );
     $dvt_gateway = WC()->payment_gateways->payment_gateways()['devault'];
     $devault_total_val = WC_Gateway_devault::calc_dvt_total( WC()->cart->total ) ;
     $store_address = $dvt_gateway->store_devault_address;
@@ -32,18 +32,18 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
 					 $(function () {
 						var current;
 						var max = 100;
-					    var initial = Math.floor(Date.now()/1000);
-					    var duration = 300;
+					  var initial = Math.floor(Date.now()/1000);
+					  var duration = '.$timeout.';
 						var payment_verified = false;
-					    if(duration){
+					  if(duration){
 					     	var current = 100 * (Math.floor(Date.now()/1000) - initial)/duration;
 							$("#progressbar").progressbar({ value: current, max: max, });
 							function update() {
 					            current = 100 * (Math.floor(Date.now()/1000) - initial)/duration;
 							    $("#progressbar").progressbar({ value: current });
 							    if ( (current >= max) != payment_verified ) {
-                                    window.location.href = window.location.href;
-							        //$("#container").html("'.$description[8].'");
+                      //window.location.href = window.location.href;
+							        $("#container").html("'.$description[8].'");
 							        }
 							    }
 						    };
@@ -108,7 +108,7 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
                     </div><br style="clear: both;" />
                     <div><img style="all: unset; text-align: center; " src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example" alt="'.$req_uri.'" ></div><br style="clear: both;" />
                     <div id="confirmed" >'.$description[6].'</div>
-                    <div id="txid_show" ></div>
+                    <div id="confirmed" >'.$description[6].'</div>
             </div>';
 
     woocommerce_form_field(
