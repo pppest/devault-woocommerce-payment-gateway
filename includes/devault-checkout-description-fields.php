@@ -93,20 +93,20 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
     #txid {display: none;}
     #dvttotal {display: none;}
     .box{ border: 1px solid; border-radius: 16px; width: 19em; text-align: center; }
-    .devault{ font-family: "Montserrat", sans-serif; font-weight: bold; }
+    .devault{ font-family: "Montserrat", sans-serif; font-weight: bold; text-align: center;}
         .devault-btn { background-color: #3d35c6; border-radius: 5px; padding:10px; color: white; }
         .dvtbar > .ui-progressbar-value { background: #1c71d9; }
     </style>
     <div class="box devault">
         <div id="container" style="width:16em; margin:auto; class="devault" >
-            <div id="invoice" class="devault" ><h3><b>'.$description[1].'</h3</b></div>
+            <div id="invoice" class="devault" style="" ><h3><b>'.$description[1].'</h3</b></div>
                 <p >'.$description[2].'</b></p><br style="clear: both;" />
                 <p id="amount" style="font-size:120%;" >'.$description[3].': <b>'.$devault_total_val.' DVT</b></p><br style="clear: both;" />
-                <div style="devault">'.$description[4].': '.$store_address.'</div><br style="clear: both;" />
+                <div class="devault">'.$description[4].': '.$store_address.'</div><br style="clear: both;" />
                     <div class="devault-btn" style=" border-radius: 5px; padding:1px;">
                         <a id="link" style="color:#ffffff; text-decoration:none;" href="'.$req_uri.'" target="_blank" >'.$description[5].'</a>
                     </div><br style="clear: both;" />
-                    <div><img style="all: unset; text-align: center; " src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example" alt="'.$req_uri.'" ></div><br style="clear: both;" />
+                    <div><img style="all: unset; text-align: center;" width="100" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.$req_uri.'" alt="'.$req_uri.'" ></div><br style="clear: both;" />
                     <div id="confirmed" >'.$description[6].'</div>
                     <div id="txid_show" ></div>
 
