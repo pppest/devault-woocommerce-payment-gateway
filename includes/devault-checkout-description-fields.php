@@ -106,7 +106,7 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
                     <div class="devault-btn" style=" border-radius: 5px; padding:1px;">
                         <a id="link" style="color:#ffffff; text-decoration:none;" href="'.$req_uri.'" target="_blank" >'.$description[5].'</a>
                     </div><br style="clear: both;" />
-                    <div><img style="all: unset; text-align: center;" width="100" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.$req_uri.'" alt="'.$req_uri.'" ></div><br style="clear: both;" />
+                    <div><img style="all: unset; text-align: center;" width="100" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.$req_uri.'" alt="'.$req_uri.'" title="'.$req_uri.'" ></div><br style="clear: both;" />
                     <div id="confirmed" >'.$description[6].'</div>
                     <div id="txid_show" ></div>
 
