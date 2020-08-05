@@ -3,6 +3,8 @@
 **tl;dr**
 Accept DeVault in your woocommerce store.
 
+![payments](assets/images/payments.jpg)
+
 **How it works etc.**  
 1. Download plugin as zip from this github and upload in your wordpress site under install pluings.
 2. Activate.
@@ -20,6 +22,8 @@ The payment will be set as pending on your orders page  where you will also find
 **TODO/UPCOMING**
 1. Add support for list of disposable addresses for security and to help make payments more unique.
 2. Add support for DeLight wallet verification.
+
+
 
 **Links**  
 Website: http://www.devault.cc/  
