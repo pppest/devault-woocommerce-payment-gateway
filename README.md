@@ -9,7 +9,7 @@ Accept DeVault in your woocommerce store.
 3. Click settings which takes you to the woocommerce->settings->payments->devault-payments settings page.
 4. Fill out settings such as store address. 
 5. You can translate the checkout payment verification but changing the text in the description field. remember to keep the format separated by ```/``` .
-The payment will be set as pending on your orders page  where you willa lso find the DVT amount and the TXID. This is to avoid problems untill I add a better verification method.
+The payment will be set as pending on your orders page  where you will also find the DVT amount and the TXID. This is to avoid problems untill I add a better verification method.
 6. You have the follwing shortcodes availabla:  
 [dvt-logo] adds a DeVault logo.  
 [dvt-icon-dark] adds a dark DeVault icon.  
