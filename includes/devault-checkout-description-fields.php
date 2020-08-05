@@ -1,26 +1,26 @@
 <?php
-/* this section adds the DeVault payment info to the checkout page 
+/* this section adds the DeVault payment info to the checkout page
 * and sets hooks to pass the tx info to the order processing
 */
 
-add_filter( 'woocommerce_gateway_description', 'pest_devault_description_fields', 20, 2 );
-add_action( 'woocommerce_checkout_process', 'pest_devault_description_fields_validation' );
-add_action( 'woocommerce_checkout_update_order_meta', 'pest_checkout_update_order_meta', 10, 1 );
-add_action( 'woocommerce_admin_order_data_after_billing_address', 'pest_order_data_after_billing_address', 10, 1 );
-add_action( 'woocommerce_order_item_meta_end', 'pest_order_item_meta_end', 10, 3 );
+add_filter( 'woocommerce_gateway_description', 'techiepress_devault_description_fields', 20, 2 );
+add_action( 'woocommerce_checkout_process', 'techiepress_devault_description_fields_validation' );
+add_action( 'woocommerce_checkout_update_order_meta', 'techiepress_checkout_update_order_meta', 10, 1 );
+add_action( 'woocommerce_admin_order_data_after_billing_address', 'techiepress_order_data_after_billing_address', 10, 1 );
+add_action( 'woocommerce_order_item_meta_end', 'techiepress_order_item_meta_end', 10, 3 );
 
-function pest_devault_description_fields( $description, $payment_id ) {
+function techiepress_devault_description_fields( $description, $payment_id ) {
     if ( 'devault' !== $payment_id ) {
         return $description;
     }
-    $description = explode('/',$description);
+    $description = explode( '/', $description );
     $dvt_gateway = WC()->payment_gateways->payment_gateways()['devault'];
     $devault_total_val = WC_Gateway_devault::calc_dvt_total( WC()->cart->total ) ;
     $store_address = $dvt_gateway->store_devault_address;
     $timeout = $dvt_gateway->devault_timeout;
     $msg = get_permalink( wc_get_page_id( 'shop' ) );
     $req_uri = $store_address . '?amount=' . $devault_total_val . '&msg=' . $msg;
-    
+
     ob_start();
     echo '
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
@@ -32,20 +32,20 @@ function pest_devault_description_fields( $description, $payment_id ) {
 					 $(function () {
 						var current;
 						var max = 100;
-					    var initial = Math.floor(Date.now()/1000);
-					    var duration = 300;
+					  var initial = Math.floor(Date.now()/1000);
+					  var duration = '.$timeout.';
 						var payment_verified = false;
-					    if(duration){
+					  if(duration){
 					     	var current = 100 * (Math.floor(Date.now()/1000) - initial)/duration;
 							$("#progressbar").progressbar({ value: current, max: max, });
 							function update() {
 					            current = 100 * (Math.floor(Date.now()/1000) - initial)/duration;
 							    $("#progressbar").progressbar({ value: current });
 							    if ( (current >= max) != payment_verified ) {
-                                    window.location.href = window.location.href;
-							        //$("#container").html("'.$description[8].'");
+                      //window.location.href = window.location.href;
+							        $("#container").html("'.$description[8].'");
 							        }
-							    }   
+							    }
 						    };
 					    var interval = setInterval(update, 10);
                     });
@@ -76,10 +76,10 @@ function pest_devault_description_fields( $description, $payment_id ) {
                                             if (outs[i].e.v  ==  '. ($devault_total_val * 100000000) .'){
                                             document.getElementById("confirmed").innerHTML = "'.$description[7].'<br> ";
                                             document.getElementById("txid_show").innerHTML = eventMessage.data[0].tx.h ;
-                                            $( "#txid" ).val( String( eventMessage.data[0].tx.h ) );                                                                        
+                                            $( "#txid" ).val( String( eventMessage.data[0].tx.h ) );
                                             $( "#dvttotal" ).val( ( outs[i].e.v / 100000000 ) );
                                             payment_verified = true;
-                                            bitsocket.close(); 
+                                            bitsocket.close();
                                             document.getElementById("progressbar").remove();
                                             document.getElementById("place_order").click();
                                             }
@@ -93,22 +93,23 @@ function pest_devault_description_fields( $description, $payment_id ) {
     #txid {display: none;}
     #dvttotal {display: none;}
     .box{ border: 1px solid; border-radius: 16px; width: 19em; text-align: center; }
-    .devault{ font-family: "Montserrat", sans-serif; font-weight: bold; }
+    .devault{ font-family: "Montserrat", sans-serif; font-weight: bold; text-align: center;}
         .devault-btn { background-color: #3d35c6; border-radius: 5px; padding:10px; color: white; }
         .dvtbar > .ui-progressbar-value { background: #1c71d9; }
     </style>
     <div class="box devault">
         <div id="container" style="width:16em; margin:auto; class="devault" >
-            <div id="invoice" class="devault" ><h3><b>'.$description[1].'</h3</b></div>
+            <div id="invoice" class="devault" style="font-size:120%;" ><b>'.$description[1].'</b></div><br style="clear: both;" />
                 <p >'.$description[2].'</b></p><br style="clear: both;" />
                 <p id="amount" style="font-size:120%;" >'.$description[3].': <b>'.$devault_total_val.' DVT</b></p><br style="clear: both;" />
-                <div style="devault">'.$description[4].': '.$store_address.'</div><br style="clear: both;" />
+                <div class="devault" style="overflow-wrap: break-word;">'.$description[4].': <p>'.$store_address.'</p></div><br style="clear: both;" />
                     <div class="devault-btn" style=" border-radius: 5px; padding:1px;">
                         <a id="link" style="color:#ffffff; text-decoration:none;" href="'.$req_uri.'" target="_blank" >'.$description[5].'</a>
                     </div><br style="clear: both;" />
-                    <div><img style="all: unset; text-align: center; " src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Example" alt="'.$req_uri.'" ></div><br style="clear: both;" />
+                    <div><img style="all: unset; text-align: center;" width="100" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.$req_uri.'" alt="'.$req_uri.'" title="'.$req_uri.'" ></div><br style="clear: both;" />
                     <div id="confirmed" >'.$description[6].'</div>
                     <div id="txid_show" ></div>
+
             </div>';
 
     woocommerce_form_field(
@@ -118,7 +119,7 @@ function pest_devault_description_fields( $description, $payment_id ) {
             'label' =>__( '', 'devault-payments-woo' ),
             'class' => array( 'form-row', 'form-row-wide' ),
             'required' => true,
-        ),  
+        ),
     );
     woocommerce_form_field(
         'dvttotal',
@@ -127,13 +128,13 @@ function pest_devault_description_fields( $description, $payment_id ) {
             'label' =>__( '', 'devault-payments-woo' ),
             'class' => array( 'form-row', 'form-row-wide' ),
             'required' => true,
-        ),  
+        ),
     );
 
-    echo ' 
+    echo '
         <div id="progressbar" class="dvtbar"></div>
         <p style="font-size:80%;">Powered by DeVault</p><br style="clear: both;" />
-        </div>        
+        </div>
         ';
 
     $description = ob_get_clean();
@@ -142,13 +143,13 @@ function pest_devault_description_fields( $description, $payment_id ) {
 }
 
 
-function pest_devault_description_fields_validation() {
+function techiepress_devault_description_fields_validation() {
     if( 'devault' === $_POST['txid'] && ! isset( $_POST['txid'] ) || empty( $_POST['txid'] ) ) {
         wc_add_notice( 'Transaction not confirmed!.', 'error' );
     }
 }
 
-function pest_checkout_update_order_meta( $order_id ) {
+function techiepress_checkout_update_order_meta( $order_id ) {
     if( isset( $_POST['txid'] ) || ! empty( $_POST['txid'] ) ) {
        update_post_meta( $order_id, 'txid', $_POST['txid'] );
        update_post_meta( $order_id, 'dvttotal', $_POST['dvttotal'] );
@@ -157,14 +158,14 @@ function pest_checkout_update_order_meta( $order_id ) {
 
 
 //adds devault payment info to admin order page
-function pest_order_data_after_billing_address( $order ) {
+function techiepress_order_data_after_billing_address( $order ) {
     echo '<p><strong>' . __( 'DeVault payment tx id:', 'devault-payments-woo' ) . '</strong><br><a href="https://exploredvt.com/tx/' . get_post_meta( $order->get_id(), 'txid', true ) . '" target="_blank" >' . get_post_meta( $order->get_id(), 'txid', true ) . '</a></p>';
     echo '<p><strong>' . __( 'DeVault payment total:', 'devault-payments-woo' ) . '</strong><br>' . get_post_meta( $order->get_id(), 'dvttotal', true ) . ' DVT</p>';
 
 }
 
 //adds devault payment info to user thankyou page
-function pest_order_item_meta_end( $item_id, $item, $order ) {
+function techiepress_order_item_meta_end( $item_id, $item, $order ) {
     echo '<p><strong>' . __( 'DeVault payment tx id:', 'devault-payments-woo' ) . '</strong><br><a href="https://exploredvt.com/tx/' . get_post_meta( $order->get_id(), 'txid', true ) . '" target="_blank" >' . get_post_meta( $order->get_id(), 'txid', true ) . '</a></p>';
     echo '<p><strong>' . __( 'DeVault payment total:', 'devault-payments-woo' ) . '</strong><br>' . get_post_meta( $order->get_id(), 'dvttotal', true ) . ' DVT</p>';
 }

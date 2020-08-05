@@ -23,12 +23,13 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		// Get settings.
-		$this->title            	 = $this->get_option( 'title' );
+		$this->title            		 = $this->get_option( 'title' );
 		$this->store_devault_address = $this->get_option( 'store_devault_address' );
 		$this->description        	 = $this->get_option( 'description' );
 		$this->instructions       	 = $this->get_option( 'instructions' );
 		$this->enable_for_methods 	 = $this->get_option( 'enable_for_methods', array() );
 		$this->enable_for_virtual 	 = $this->get_option( 'enable_for_virtual', 'yes' ) === 'yes';
+		$this->devault_timeout     	 = $this->get_option( 'devault_timeout' );
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );
@@ -43,11 +44,11 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 	 */
 	protected function setup_properties() {
 		$this->id                 = 'devault';
-		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-SVG-Horizontal-Dark.svg' );
+		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-256px-Horizontal-Dark.png' );
 		$this->method_title       = __( 'DeVault Payments', 'devault-payments-woo' );
 		$this->method_description = __( 'Have your customers pay with devault  Payments.', 'devault-payments-woo' );
-		$this->devault_timeout    = __( 'Payment timeout');
-		$this->price_in_dvt		  = 0;
+		$this->devault_timeout    = __( 'Payment timeout' );
+		$this->price_in_dvt		  	= 0;
 		$this->has_fields         = false;
 	}
 
@@ -80,7 +81,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			'instructions'       => array(
 				'title'       => __( 'Instructions', 'devault-payments-woo' ),
 				'type'        => 'textarea',
-				'description' => __( 'Instructions that will be added to the thank you page.', 'devault-payments-woo' ),
+				'description' => __( 'Additional instructions text.', 'devault-payments-woo' ),
 				'default'     => __( 'DeVault Payments before delivery.', 'devault-payments-woo' ),
 				'desc_tip'    => true,
 			),
@@ -319,7 +320,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			$woo_currency_price = $decode['devault'][''.strtolower( get_woocommerce_currency() ).''];
 			$devault_val = floatval ( $woo_currency_price );
 			return $devault_val;
-			} 
+			}
 		}
 
 	// calculate order total dvt value + rand to make unique
@@ -345,20 +346,20 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 					'result'   => 'success',
 					'redirect' => $this->get_return_url( $order ),
 					);
-				} 
-		} 	
+				}
+		}
 	}
 
 	public function devault_payment_processing( $order ) {
 		$txid 				= esc_attr( $_POST['txid'] );
 		$amount 			= ($this->calc_dvt_total($order->get_total() ) * 100000000);
 		$total 				= esc_attr( $_POST['dvttotal'] ) * 100000000;
-		
+
 		// set store adderss
-		if ( strlen( $this->store_devault_address ) == 50  ) { 
+		if ( strlen( $this->store_devault_address ) == 50  ) {
 			$store_address	= substr( $this->store_devault_address, 8 );
 			} else { $store_address = $this->store_devault_address ;};
-			
+
 		// test id amoutns correspond
 		if( $total != $amount ){
 			$error_message .= "total: " . $total . " , amount: " . $amount;
@@ -366,7 +367,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			return false;
 		}
 
-		//check if txid is valid, need proper test method 
+		//check if txid is valid, need proper test method
 		if( strlen($txid) != 64){
 			$error_message .= "total: " . $total . " , txid: " . $txid . " , verified: " . $verified . "store: " . $store_address;
 			wc_add_notice( __('txid not valid', 'dvtpay-payments-woo') . $error_message, 'error' );
@@ -391,7 +392,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 		$verified			= 0;
 
 		// check if amount and storeaddress is in tx
-	
+
 		// loop thru unconfirmed if on
 		$outputs = $decode["u"][0]["out"];
 		echo  'no outputs: '.( count( $outputs )) ;
@@ -409,7 +410,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			$error_message .= "total: " . $total . " amoun: ".$amount. ", tx amount ". $opamount . " txid: " . $txid . " ,tx addyerified: " .$opaddy . "store: " . $store_address;
 			wc_add_notice( __('Payment was not verified.', 'dvtpay-payments-woo') . $error_message, 'error' );
 			return false;
-			}	
+			}
 
 		if ( $verified  == 1){
 			$order->update_status('pending-payment', __('Awaiting DeVault payment', 'dvtpay-payments-woo'),true);
@@ -458,5 +459,5 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			echo wp_kses_post( wpautop( wptexturize( $this->instructions ) ) . PHP_EOL );
 			}
 		}
-		
+
 }// end class
