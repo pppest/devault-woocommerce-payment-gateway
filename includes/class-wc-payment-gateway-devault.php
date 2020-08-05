@@ -44,7 +44,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 	 */
 	protected function setup_properties() {
 		$this->id                 = 'devault';
-		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-SVG-Horizontal-Dark.svg' );
+		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-256px-Horizontal-Dark.png' );
 		$this->method_title       = __( 'DeVault Payments', 'devault-payments-woo' );
 		$this->method_description = __( 'Have your customers pay with devault  Payments.', 'devault-payments-woo' );
 		$this->devault_timeout    = __( 'Payment timeout' );

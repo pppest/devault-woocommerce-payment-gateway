@@ -99,10 +99,10 @@ function techiepress_devault_description_fields( $description, $payment_id ) {
     </style>
     <div class="box devault">
         <div id="container" style="width:16em; margin:auto; class="devault" >
-            <div id="invoice" class="devault" style="" ><h3><b>'.$description[1].'</h3</b></div>
+            <div id="invoice" class="devault" style="font-size:120%;" ><b>'.$description[1].'</b></div><br style="clear: both;" />
                 <p >'.$description[2].'</b></p><br style="clear: both;" />
                 <p id="amount" style="font-size:120%;" >'.$description[3].': <b>'.$devault_total_val.' DVT</b></p><br style="clear: both;" />
-                <div class="devault">'.$description[4].': '.$store_address.'</div><br style="clear: both;" />
+                <div class="devault" style="overflow-wrap: break-word;">'.$description[4].': <p>'.$store_address.'</p></div><br style="clear: both;" />
                     <div class="devault-btn" style=" border-radius: 5px; padding:1px;">
                         <a id="link" style="color:#ffffff; text-decoration:none;" href="'.$req_uri.'" target="_blank" >'.$description[5].'</a>
                     </div><br style="clear: both;" />
