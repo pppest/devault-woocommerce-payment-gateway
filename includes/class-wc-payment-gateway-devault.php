@@ -361,11 +361,11 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 			} else { $store_address = $this->store_devault_address ;};
 
 		// test id amoutns correspond
-		if( $total != $amount ){
+		/*if( $total != $amount ){
 			$error_message .= "total: " . $total . " , amount: " . $amount;
 			wc_add_notice( __('amounts not erqual.', 'dvtpay-payments-woo') . $error_message, 'error' );
 			return false;
-		}
+		} */
 
 		//check if txid is valid, need proper test method
 		if( strlen($txid) != 64){
