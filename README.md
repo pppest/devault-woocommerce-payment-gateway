@@ -1,15 +1,19 @@
 # A DeVault Payment plugin for woocommerce by Pest
 
+
+PLEASE NOTE: I found a problem when using a gift card plugin. seems to work fine
+w manually created coupons. ill fix it asap today if i have time
+
+
 **tl;dr**
 Accept DeVault in your woocommerce store.
 
-![payments](assets/images/payments.jpg)
 
 **How it works etc.**  
 1. Download plugin as zip from this github and upload in your wordpress site under install pluings.
 2. Activate.
 3. Click settings which takes you to the woocommerce->settings->payments->devault-payments settings page.
-4. Fill out settings such as store address. 
+4. Fill out settings such as store address.
 5. You can translate the checkout payment verification but changing the text in the description field. remember to keep the format separated by ```/``` .
 The payment will be set as pending on your orders page  where you will also find the DVT amount and the TXID. This is to avoid problems untill I add a better verification method.
 6. You have the follwing shortcodes availabla:  
@@ -24,6 +28,9 @@ The payment will be set as pending on your orders page  where you will also find
 2. Add support for DeLight wallet verification.
 
 
+![payments](assets/images/payments.jpg)
+![payments](assets/images/thankyoupage.jpg)
+![payments](assets/images/admin-order-page.jpg)
 
 **Links**  
 Website: http://www.devault.cc/  
