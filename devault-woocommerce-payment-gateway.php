@@ -91,8 +91,6 @@ function add_action_links ( $links ) {
  * @param array  $atts     Shortcode attributes. Default empty.
  * @param atring $content  Shortcode content. Default null.
  * @param string $tag      Shortcode tag (name). Default empty.
- *
- * @return string
  */
 add_shortcode( 'dvt-logo', 'embed_dvt_logo_shortcode' );
 function embed_dvt_logo_shortcode( $atts = ['width'], $content = null, $tag = '' ){
