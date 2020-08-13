@@ -352,20 +352,13 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 
 	public function devault_payment_processing( $order ) {
 		$txid 				= esc_attr( $_POST['txid'] );
-		$amount 			= ($this->calc_dvt_total($order->get_total() ) * 100000000);
 		$total 				= esc_attr( $_POST['dvttotal'] ) * 100000000;
+//		$amount 			= ($this->calc_dvt_total($order->get_total() ) * 100000000);
 
 		// set store adderss
 		if ( strlen( $this->store_devault_address ) == 50  ) {
 			$store_address	= substr( $this->store_devault_address, 8 );
 			} else { $store_address = $this->store_devault_address ;};
-
-		// test id amoutns correspond
-		/*if( $total != $amount ){
-			$error_message .= "total: " . $total . " , amount: " . $amount;
-			wc_add_notice( __('amounts not erqual.', 'dvtpay-payments-woo') . $error_message, 'error' );
-			return false;
-		} */
 
 		//check if txid is valid, need proper test method
 		if( strlen($txid) != 64){
@@ -385,8 +378,8 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 								)
 							);
 
-		$b64 				= base64_encode( json_encode( $query, JSON_UNESCAPED_SLASHES ));
-		$json_url 			.= $b64;
+		$b64 				  = base64_encode( json_encode( $query, JSON_UNESCAPED_SLASHES ));
+		$json_url 		.= $b64;
 		$json 				= shell_exec( $json_url );
 		$decode 			= json_decode( $json, true );
 		$verified			= 0;
@@ -398,16 +391,16 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 		echo  'no outputs: '.( count( $outputs )) ;
 		for($x=0; $x< count( $outputs ); $x++ ) {
 			echo 'output #: '. $x.'  out.e.v: '.$outputs[$x]["e"]["v"].' - ';
-			if(  ( ( (int)$outputs[$x]["e"]["v"]) == (int)$amount ) && ( $outputs[$x]["e"]["a"] == $store_address ) ){
+			if(  ( ( (int)$outputs[$x]["e"]["v"]) == (int)$total ) && ( $outputs[$x]["e"]["a"] == $store_address ) ){
 					$verified = 1;
-					$opaddy =  $outputs[$x]["e"]["a"];
+					$opaddy 	=  $outputs[$x]["e"]["a"];
 					$opamount =  $outputs[$x]["e"]["v"];
 					break;
 				}
 			}
 		echo 'verified: '.$verified;
 		if ( $verified  == 0 ){
-			$error_message .= "total: " . $total . " amoun: ".$amount. ", tx amount ". $opamount . " txid: " . $txid . " ,tx addyerified: " .$opaddy . "store: " . $store_address;
+			$error_message .= "total: " . $total . " amount: ".$amount. ", tx amount ". $opamount . " txid: " . $txid . " ,tx addyerified: " .$opaddy . "store: " . $store_address;
 			wc_add_notice( __('Payment was not verified.', 'dvtpay-payments-woo') . $error_message, 'error' );
 			return false;
 			}

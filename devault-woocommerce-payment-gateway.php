@@ -85,9 +85,18 @@ function add_action_links ( $links ) {
 }
 
 // dvt shortcodes
+/**
+ * The [dvt-logo] shortcode.  Accepts a width and will display the dvt logo.
+ *
+ * @param array  $atts     Shortcode attributes. Default empty.
+ * @param atring $content  Shortcode content. Default null.
+ * @param string $tag      Shortcode tag (name). Default empty.
+ *
+ * @return string
+ */
 add_shortcode( 'dvt-logo', 'embed_dvt_logo_shortcode' );
-function embed_dvt_logo_shortcode(){
-	echo '<img src="'.plugin_dir_url(__FILE__).'assets/DVT-Logo-SVG-Horizontal-Dark.svg" >';
+function embed_dvt_logo_shortcode( $atts = ['width'], $content = null, $tag = '' ){
+	echo '<img width="'.$atts['width'].'" src="'.plugin_dir_url(__FILE__).'assets/DVT-Logo-SVG-Horizontal-Dark.svg" >';
 }
 // dvt shortcode
 add_shortcode( 'dvt-icon-light', 'embed_dvt_icon_light_shortcode' );
