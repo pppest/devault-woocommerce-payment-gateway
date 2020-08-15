@@ -28,9 +28,7 @@ The payment will be set as pending on your orders page  where you will also find
 2. Add support for DeLight wallet verification.
 
 
-![payments](assets/images/payments.jpg)
-![payments](assets/images/thankyoupage.jpg)
-![payments](assets/images/admin-order-page.jpg)
+
 
 **Links**  
 Website: http://www.devault.cc/  
