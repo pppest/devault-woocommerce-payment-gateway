@@ -24,7 +24,8 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 
 		// Get settings.
 		$this->title            		 = $this->get_option( 'title' );
-		$this->store_devault_address = $this->get_option( 'store_devault_address' );
+		$this->store_default_address = $this->get_option( 'store_default_address' );
+		$this->disposable_addresses	 = $this->get_option( 'disposable_addresses' );
 		$this->description        	 = $this->get_option( 'description' );
 		$this->instructions       	 = $this->get_option( 'instructions' );
 		$this->enable_for_methods 	 = $this->get_option( 'enable_for_methods', array() );
@@ -44,7 +45,7 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 	 */
 	protected function setup_properties() {
 		$this->id                 = 'devault';
-		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-256px-Horizontal-Dark.png' );
+		$this->icon               = apply_filters( 'woocommerce_devault_icon', plugin_dir_url(__FILE__).'../assets/DVT-Logo-SVG-Horizontal-Dark.svg' );
 		$this->method_title       = __( 'DeVault Payments', 'devault-payments-woo' );
 		$this->method_description = __( 'Have your customers pay with devault  Payments.', 'devault-payments-woo' );
 		$this->devault_timeout    = __( 'Payment timeout' );
@@ -104,11 +105,18 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 				'type'    => 'checkbox',
 				'default' => 'yes',
 			),
-			'store_devault_address'  => array(
-			'title'       => __( 'Your stores DeVault address', 'devault-payments-woo' ),
+			'store_default_address'  => array(
+			'title'       => __( 'Your stores default DeVault address', 'devault-payments-woo' ),
 			'type'        => 'text',
-			'description' => __( 'your stores devault address.', 'devault-payments-woo' ),
-			'default'     => __( 'enter your stores devault address here.', 'devault-payments-woo' ),
+			'description' => __( 'This is your fallback DeVault address.', 'devault-payments-woo' ),
+			'default'     => __( 'enter your stores default DeVault address here.', 'devault-payments-woo' ),
+			'desc_tip'    => true,
+			),
+			'disposable_addresses'  => array(
+			'title'       => __( 'List of disposable DeVault addresses.', 'devault-payments-woo' ),
+			'type'        => 'textarea',
+			'description' => __( 'enter a list of disposable devault addresses separated by "/" here.', 'devault-payments-woo' ),
+			'default'     => __( 'List of "/" separated disposable addresses.', 'devault-payments-woo' ),
 			'desc_tip'    => true,
 			),
 			'devault_timeout'  => array(
@@ -356,9 +364,9 @@ class WC_Gateway_devault extends WC_Payment_Gateway {
 //		$amount 			= ($this->calc_dvt_total($order->get_total() ) * 100000000);
 
 		// set store adderss
-		if ( strlen( $this->store_devault_address ) == 50  ) {
-			$store_address	= substr( $this->store_devault_address, 8 );
-			} else { $store_address = $this->store_devault_address ;};
+		if ( strlen( $this->store_default_address ) == 50  ) {
+			$store_address	= substr( $this->store_default_address, 8 );
+			} else { $store_address = $this->store_default_address ;};
 
 		//check if txid is valid, need proper test method
 		if( strlen($txid) != 64){
